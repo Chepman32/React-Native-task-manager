@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native';
 import {AddTodo} from "./components/AddTodo";
+import TodosItem from "./components/Todo";
 
 export default function App() {
   const [todos, setTodos] = useState([
@@ -8,18 +9,23 @@ export default function App() {
   const addTodo = (title) => {
     setTodos(prev => [...prev,
       {
-        id: Date.now().toString(),
+        id: Date.now(),
         title
       }
       ])
   }
+  const removeTodo = id => {
+    setTodos(todos.filter(t => t.id != id))
+  }
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <AddTodo onSubmit={addTodo}/>
-      {
-        todos.map(t => <Text key={t.id}>{t.title}</Text>)
-      }
-    </View>
+      <ScrollView>
+        {
+          todos.map(t => <TodosItem key={t.id} id={t.id} title={t.title} onRemove={removeTodo}/>)
+        }
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 

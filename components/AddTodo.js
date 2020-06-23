@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, ScrollView, Alert } from 'react-native';
 export const AddTodo = ({ onSubmit }) => {
     const todoHandler = () => {
         if(value.trim()) {
-            onSubmit("элемент");
+            onSubmit(value);
+            setValue("")
         }
         else {
-
+Alert.alert("название не может быть пустым")
         }
     }
     const [ value, setValue ] = useState("")
     return (
-        <View >
+        <ScrollView >
             <Button onPress={ todoHandler } title="Добавить заметку"/>
-            <TextInput style={styles.input} value={ value } onChangeText={ setValue }/>
-        </View>
+            <TextInput style={styles.input} value={ value } onChangeText={ setValue } keyboardType="email-address" autoCompleteType="password" placeholder="Введите название заметки" autoCorrect={false} autoCapitalize="words"/>
+        </ScrollView>
     );
 };
 const styles = StyleSheet.create({
@@ -24,12 +25,11 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     input: {
-        height: 20,
-        width: 200,
         padding: 15,
-        color: "#ccc",
         borderStyle: "solid",
         borderWidth: 2,
-        borderColor: "#000"
+        borderColor: "#000",
+        marginTop: 25,
+        marginBottom: 25,
     }
 })

@@ -7,6 +7,6 @@ export const AppText = props => {
 };
 const styles = StyleSheet.create({
   text: {
-    fontFamily:"roboto-regular"
+    fontFamily:"Baskerville-SemiBold"
   }
 })

@@ -7,7 +7,7 @@ import * as Font from "expo-font";
 import { AppLoading } from "expo";
 async function loadApplication() {
   await Font.loadAsync({
-    "roboto": require("./assets/fonts/Roboto-Regular.ttf"),
+    "Baskerville-SemiBold": require("./assets/fonts/Baskerville-SemiBold.ttf"),
     "roboto-bold": require("./assets/fonts/Roboto-Bold.ttf")
   })
 }

@@ -42,7 +42,8 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   title: {
-fontFamily: "roboto"
+fontFamily: "Baskerville-SemiBold",
+fontSize: 20
   }
 })
 export default TodoScreen

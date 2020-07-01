@@ -13,7 +13,7 @@ Alert.alert("название не может быть пустым")
     const [ value, setValue ] = useState("")
     return (
         <ScrollView >
-            <Button onPress={ todoHandler } title="Добавить заметку"/>
+            <Button onPress={ todoHandler } title="Добавить заметку" style={ {textAlign: "center", marginBottom: 20, fontSize: 25} }/>
             <TextInput style={styles.input} value={ value } onChangeText={ setValue } keyboardType="email-address" autoCompleteType="password" placeholder="Введите название заметки" autoCorrect={false} autoCapitalize="words"/>
         </ScrollView>
     );

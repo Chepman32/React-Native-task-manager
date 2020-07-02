@@ -11,7 +11,7 @@ const TodosItem = ( {id, title, onRemove, onOpen} ) => {
 const styles = StyleSheet.create({
     flexBlock: {
         display: "flex",
-        width: width *0.8,
+        width: width *0.95,
         justifyContent: "center",
         alignItems: "center",
         marginVertical: 30,
@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
         backgroundColor: "blue"
     },
     text: {
+        
         fontSize: 30,
         fontWeight: "bold",
         color: "#fff"

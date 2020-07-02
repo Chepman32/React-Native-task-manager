@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Modal, Button, StyleSheet, TextInput, Alert } from "react-native";
 import { THEME } from "../theme";
 export const EditModal = ({ modal, onCancel, value, onSave }) => {
+  const [ title, setTitle ] = useState (title);
   const saveHandler = () => {
     if(title.trim().length < 3) {
       Alert.alert(`Длина заметки должна быть больше 3 символов. Сейчас ${title.trim().length} символов`)
@@ -10,7 +11,7 @@ export const EditModal = ({ modal, onCancel, value, onSave }) => {
       onSave(title);
     }
   }
-  const [ title, setTitle ] = useState (value);
+
   return (
     <Modal visible={ modal } animationType="slide" >
       <View style={ styles.modalWrap } >

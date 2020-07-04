@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { ScrollView, View, Text, StyleSheet, Image, Dimensions } from "react-native";
 import { AddTodo } from "../components/AddTodo";
 import TodosItem from "../components/TodosItem";
+import { TodoContext } from "../context/todoContext";
+import { ScreenContext } from "../context/screen/screenContext";
 const { width, height } = Dimensions.get("screen");
-const MainScreen = ({ addTodo, todos, removeTodo, openTodo }) => {
+const MainScreen = ({  }) => {
+  const { addTodo, todos, removeTodo } = useContext(TodoContext);
+  const {changeScreen} = useContext(ScreenContext)
   const [deviceWidth, setDeviceWidth] = useState(Dimensions.get("window").width);
   useEffect(() => {
     const update = () => {
@@ -19,7 +23,7 @@ const MainScreen = ({ addTodo, todos, removeTodo, openTodo }) => {
     <ScrollView style={{ width: deviceWidth}} >
       <View style={{...styles.container}} >
       {
-          todos.map(t => <TodosItem key={t.id} id={t.id} title={t.title} onRemove={removeTodo} onOpen={openTodo} todo={t} />)
+          todos.map(t => <TodosItem key={t.id} id={t.id} title={t.title} onRemove={removeTodo} onOpen={changeScreen} todo={t} />)
         }
       </View>
       </ScrollView>

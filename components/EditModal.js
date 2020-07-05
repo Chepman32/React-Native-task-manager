@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Modal, Button, StyleSheet, TextInput, Alert } from "react-native";
 import { THEME } from "../theme";
 export const EditModal = ({ modal, onCancel, value, onSave }) => {
-  const [ title, setTitle ] = useState (title);
+  const [ title, setTitle ] = useState (value);
   const saveHandler = () => {
     if(title.trim().length < 3) {
       Alert.alert(`Длина заметки должна быть больше 3 символов. Сейчас ${title.trim().length} символов`)
@@ -11,13 +11,16 @@ export const EditModal = ({ modal, onCancel, value, onSave }) => {
       onSave(title);
     }
   }
-
+const cancelHandler =() => {
+  setTitle(value);
+  onCancel()
+}
   return (
     <Modal visible={ modal } animationType="slide" >
       <View style={ styles.modalWrap } >
-        <TextInput style={styles.input} value={title} onChangeText={setTitle} placeholder="Введите название" maxLength={64} />
+        <TextInput style={styles.input} value={value} onChangeText={setTitle} placeholder="Введите название" maxLength={64} />
         <View style={styles.buttons}>
-        <Button title="Отменить" onPress={ onCancel } color={ THEME.DANGER_COLOR } />
+        <Button title="Отменить" onPress={ cancelHandler } color={ THEME.DANGER_COLOR } />
         <Button title="Сохранить" onPress={ saveHandler } />
         </View>
       </View>

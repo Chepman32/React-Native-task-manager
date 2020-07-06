@@ -1,12 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
-import { ScrollView, View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import React, { useState, useEffect, useContext, useCallback } from "react";
+import { ScrollView, View, Text, StyleSheet, Image, Dimensions, ActivityIndicator, Button } from "react-native";
 import { AddTodo } from "../components/AddTodo";
 import TodosItem from "../components/TodosItem";
 import { TodoContext } from "../context/todoContext";
 import { ScreenContext } from "../context/screen/screenContext";
-const { width, height } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 const MainScreen = ({  }) => {
-  const { addTodo, todos, removeTodo } = useContext(TodoContext);
+  const { addTodo, todos, removeTodo, fetchData, isLoading, error } = useContext(TodoContext);
+  const loadTodos = useCallback( async () => await fetchData, [fetchData])
+  useEffect(() => {
+    fetchData();
+  }, [])
   const {changeScreen} = useContext(ScreenContext)
   const [deviceWidth, setDeviceWidth] = useState(Dimensions.get("window").width);
   useEffect(() => {
@@ -19,6 +23,17 @@ const MainScreen = ({  }) => {
       Dimensions.removeEventListener("change", update)
     };
   });
+  if(isLoading) {
+    return <ActivityIndicator size="large" color="#0000ff" />
+  }
+  if(error) {
+    return (
+      <View>
+        <Button title="Повторить" onPress={() => fetchData()} />
+        <Text style={{fontSize: 50}}>{ error }</Text>
+      </View>
+    )
+  }
   let content = (
     <ScrollView style={{ width: deviceWidth}} >
       <View style={{...styles.container}} >

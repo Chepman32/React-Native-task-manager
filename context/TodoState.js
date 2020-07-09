@@ -4,6 +4,7 @@ import { Alert } from "react-native"
 import {todoReducer} from "./todoReducer";
 import { ADD_TODO, REMOVE_TODO, UPDATE_TODO, SHOW_LOADER, HIDE_LOADER, SHOW_ERROR, CLEAN_ERROR, FETCH_TODOS } from "./types";
 import { ScreenContext } from "./screen/screenContext";
+import { Http } from "../http"
 export const TodoState = ({children}) => {
   const initialState = {
     todos: [],
@@ -13,12 +14,7 @@ export const TodoState = ({children}) => {
   const [state, dispatch] = useReducer(todoReducer, initialState);
   const { changeScreen } = useContext(ScreenContext);
   const addTodo = async title => {
-    const response = await fetch("https://fir-android-ios-6299f.firebaseio.com/todos.json", {
-      method: "POST",
-      headers: { "Content-Type": "application/json/" },
-      body: JSON.stringify({ title })
-    });
-    const data = await response.json();
+    const data = await Http.post(`https://fir-android-ios-6299f.firebaseio.com/todos.json`, {title});
     console.log("Data", data);
     dispatch({ type: ADD_TODO, title, id: data.name })
   }
@@ -33,7 +29,11 @@ export const TodoState = ({children}) => {
           onPress: () => console.log('Удаление отменено'),
           style: 'cancel'
         },
-        { text: 'Удалить', onPress: () => {
+        { text: 'Удалить', onPress: async () => {
+          await fetch(`https://fir-android-ios-6299f.firebaseio.com/todos/${id}.json`,{
+            method: "DELETE",
+          headers: {"Content-Type": "application/json"}
+          })
           changeScreen(null)
     dispatch({type: REMOVE_TODO, id})
         } }
@@ -41,8 +41,20 @@ export const TodoState = ({children}) => {
       { cancelable: false }
     );
   }
-  const updateTodo = (id, title) => {
-    dispatch({type: UPDATE_TODO,id, title});
+  const updateTodo = async (id, title) => {
+    cleanError()
+    try {
+      await fetch(`https://fir-android-ios-6299f.firebaseio.com/todos/${id}.json`, {
+      method: "PATCH",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({title})
+    });
+    dispatch({type: UPDATE_TODO, id, title});
+    }
+    catch(e) {
+      showError("Ошибка...");
+      console.log(e);
+    }
   };
   const showLoader = () => dispatch({type: SHOW_LOADER});
   const hideLoader = () => dispatch({type: HIDE_LOADER});
@@ -67,7 +79,7 @@ export const TodoState = ({children}) => {
   finally {
     hideLoader();
   }
-  }
+  };
   return <TodoContext.Provider value={{
     todos: state.todos, addTodo, removeTodo, updateTodo, fetchData, isLoading: state.isLoading, error: state.error
   }}

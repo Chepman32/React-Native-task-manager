@@ -34,7 +34,7 @@ export class Http {
     }
   }
 };
-async function request(method = "GET", data) {
+async function request(url, method = "GET", data) {
   const config = {
     method,
     headers: Http.HEADERS
@@ -43,5 +43,5 @@ async function request(method = "GET", data) {
     config.body = JSON.stringify(data);
   }
   const response = await fetch(url, config);
-  return response;
+  return await response.json();
 }
